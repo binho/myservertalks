@@ -1,0 +1,209 @@
+
+MyServerTalks aim to be an inteface beetween you server and Messaging network. 
+
+Based on XMPP protocol let you manage your servers using you jabber ou gtalk account.
+
+COPYING:
+--------
+
+MyServerTalks Beta was release under GNU Public License v2.
+
+
+
+REQUIREMENTS:
+-------------
+
+Python....: http://www.python.org
+DNSPython.: http://www.dnspython.org
+XMPPPy....: 
+
+INSTALLING:
+-----------
+
+wget http://www.dnspython.org/kits/1.5.0/dnspython-1.5.0.tar.gz
+wget http://ufpr.dl.sourceforge.net/sourceforge/xmpppy/xmpppy-0.4.0.tar.gz
+wget http://myservertalks.com/downloads/MyServerTalks-current.tar.gz
+
+tar -xzvf dnspython-1.5.0.tar.gz
+tar -xzvf xmpppy-0.4.0.tar.gz
+
+cd dnspython-1.5.0
+python setup.py install
+cd ../xmpppy-0.4.0
+python setup.py install
+
+tar -xzvf MyServerTalks-current.tar.gz
+
+cp -R MyServerTalks /usr/local
+
+
+SETUP:
+------------
+
+At /usr/local/MyServerTalks/etc you will find 3 files:
+
+config.ini - Server contact information
+contacts.ini - Contacts configuration
+modules.ini - Extensions configuration
+
+
+1. Configure your server jabber/gmail account as config.ini:
+
+[jaccount]
+user = zetrovao@jabber.org
+pass = 123deoliveira4
+
+replace zetrovao@jabber.org with your server account (ex: mywonderfulserver@gmail.com) and with your password. Be carefull with file permissions, perform chmod 400 config.ini is a good option.
+
+2. Configure the contactlist that will be able to talk to server at contacts.ini:
+
+[andrei.mosman@gmail.com]
+status = disabled
+super-secret = thewho
+
+[cleberwillian@gmail.com]
+status = disabled
+super-secret = 1millionbucks
+
+The super-secret defined for each user will be used to access an special escope (hi-level escope) leave it blank to disable the super access. The status field indicates is this contact is enabled or disabled.
+
+3. Configure extensions at modules.ini
+
+The extensions provides a way to expand your server talking. With extensions you can, for example, call some script or binary that do an specific thing that may interest to you. 
+
+You can configure internal functions (that will be processed inside MyServerTalks) as you can se:
+
+[LIST]
+type=internal
+call=
+escope=super
+status=enabled
+
+[CHDIR]
+type=internal
+call=
+escope=super
+status=enabled
+
+
+Here an simple explanation:
+
+[LIST]  	--> define the name that user will call at messenger window
+type = internal --> indicate that this command (list) will be processed by internal (core) MyST processor
+call= 		--> this parameter interest only to internal functions
+esciope=super 	--> this command can only be performed by SUPER escope.
+status=enabled 	--> this command is enabled to use.
+
+
+But you can also expand your system to perform anything that interest you. 
+
+[TEST]  		--> define the name that user will call at messenger window: test
+type = external 	--> indicate that this command (test) will be processed by external MyST processor
+call= test.sh		--> the name of an binary or script located at /usr/local/MyServerTalks/extensions/external that will be called
+esciope=user,super 	--> this command can only be performed by USER (initial escope) and SUPER escope.
+status=enabled 		--> this command is enabled to use.
+
+Now you can create a shell script /usr/local/MyServerTalks/extensions/external/test.sh with something like this:
+
+#!/bin/sh
+echo "Hello World... How are you?"
+
+
+
+
+Adjust the permissons (chmod +x /usr/local/MyServerTalks/extensions/external/test.sh) and start MyST.py. When one of the enabled contacts execute "test" the script test.sh will be called.
+
+
+
+4. Start the server:
+
+python /usr/local/MyServerTalks/MyST.py
+
+
+
+You probly will receive an authorization request on your enabled contacts (vide contacts.ini).
+
+ESCOPE
+---------
+
+Now, that you know modules.conf you wanna know what-the-fucking is escope? Whell, escope is an escope to command execution. You can see in what escope you are by typing at your messenger:
+
+escope
+
+to change to SUPER escope you can use:
+
+escope SUPER yoursecrethere
+
+to change back to USER escope try:
+
+escope USER
+
+
+
+
+
+
+EXTRA INFO: How MyST send parameters to external modules/apps ???
+------------------------------------------------------------------
+
+
+
+
+MyST execute de command by pipe open with some parameters:
+
+"contact@host" "escope" "command" "parameters;separated by;coma"
+
+To our test example MyST execute:
+
+/usr/local/MyServerTalks/extensions/external/test.sh "contact@gmail.com" "user" ""
+
+if user has typed something like "test 123 456" MyST execute:
+
+/usr/local/MyServerTalks/extensions/external/test.sh "contact@gmail.com" "user" "123;456"
+
+
+
+OTHER INFORMATIONS
+--------------------
+
+MyST is an small project, with simply development but with no limits to grow-up. With MyST you the sky is the limit. You can do anything you want using a Messenger client.
+
+
+Enjoy
+
+
+PS
+---------
+
+If you release any GPL module to MyST you can send it to contrib@myservertalks.net. 
+
+We are openned for critcs, suggestions and help. Including help with main code and documentations. we rope to replace this doc with a better one, please help.
+
+
+Regards,
+
+Andrei Mosman (mosman@myservertalks.net) and Cleber Santos (binho@myservertalks.net)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+- Added help command to show all commands for your escope
+- Added about command to show information about version of MyServerTalks and local server informations
+- Add pwd command to see the current directory
+- Messages normalized
+- Sucess, error and unavaible codes do reply messages
+- Code organization and sanity checks added

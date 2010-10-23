@@ -1,0 +1,3 @@
+1 - Bug fixed in config files with spaces
+2 - Possible to use a different host and port to connect (config.ini)
+3 - Possibility to use a proxy (config.ini)
